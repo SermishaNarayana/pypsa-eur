@@ -924,7 +924,6 @@ def add_co2_tracking(
             p_nom_extendable=True,
         )
 
-
 def add_co2_network(n, costs, co2_network_cost_factor=1.0, co2_liquefaction=False):
     """
     Add CO2 transport network to the PyPSA network.
@@ -6112,7 +6111,7 @@ def add_enhanced_geothermal(
     overlap = pd.read_csv(egs_overlap, index_col=0)
     overlap.columns = overlap.columns.astype(int)
     egs_potentials = pd.read_csv(egs_potentials, index_col=0)
-
+    
     Nyears = n.snapshot_weightings.generators.sum() / 8760
     dr = costs_config["fill_values"]["discount rate"]
     lt = costs.at["geothermal", "lifetime"]
@@ -6146,7 +6145,6 @@ def add_enhanced_geothermal(
 
     # p_nom_max conversion GW -> MW
     egs_potentials["p_nom_max"] = egs_potentials["p_nom_max"] * 1000.0
-
     # not using add_carrier_buses, as we are not interested in a Store
     n.add("Carrier", "geothermal heat")
 
@@ -6760,7 +6758,7 @@ if __name__ == "__main__":
             egs_overlap=snakemake.input["egs_overlap"],
             egs_config=snakemake.params["sector"]["enhanced_geothermal"],
             spatial=spatial,
-            egs_capacity_factors="path/to/capacity_factors.csv",
+            egs_capacity_factors=snakemake.input["egs_capacity_factors"],
         )
 
     if options["imports"]["enable"]:
